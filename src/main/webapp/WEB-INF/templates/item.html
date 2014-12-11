@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+	<!-- Metadata -->
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<!-- Title -->
+	<title th:text="#{app.title}">Title</title>
+	<!-- CSS Style -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+	<!-- JavaScript -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<!-- Header -->
+	<header th:fragment="header" role="banner">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<p class="navbar-text" th:text="#{app.title}">Title</p>
+				</div>
+			</div><!-- /.container-fluid -->
+		</nav>
+	</header>
+
+	<!-- Content -->
+	<div class="container" role="main">
+		<form class="form-horizontal" role="form" method="post" id="itemForm" th:object="${itemForm}" th:action="@{/item/update}">
+			<!-- Alerts -->
+			<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+				<ul>
+					<li th:each="err : ${#fields.allErrors()}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h2 class="panel-title">Items</h2>
+				</div>
+				<div class="panel-body">
+					<!-- Items loop -->
+					<div class="form-group control-group" th:each="item,rowStat : *{itemList}">
+						<label class="control-label col-sm-1 lead" th:text="${rowStat.count}">Label</label>
+						<!-- Name -->
+						<label class="control-label col-sm-3 lead" th:text="#{name}">Name</label>
+						<div class="col-sm-2">
+							<div class="input-group input-group-lg" th:classappend="${#fields.hasErrors('itemList[__${rowStat.index}__].name')}? 'has-error'">
+								<input class="form-control input-lg text-right" type="text" th:field="*{itemList[__${rowStat.index}__].name}"/>
+							</div>
+						</div>
+						<!-- Price -->
+						<label class="control-label col-sm-3 lead" th:text="#{price}">Price</label>
+						<div class="col-sm-2">
+							<div class="input-group input-group-lg" th:classappend="${#fields.hasErrors('itemList[__${rowStat.index}__].price')}? 'has-error'">
+								<input class="form-control input-lg text-right" type="text" th:field="*{itemList[__${rowStat.index}__].price}"/>
+								<span class="input-group-addon" th:text="#{unit.price}">yen</span>
+							</div>
+						</div>
+					</div>
+				</div><!-- /.panel-body -->
+			</div><!-- /.panel -->
+			<br/>
+			<!-- Actions -->
+			<div class="form-actions text-center">
+				<button type="submit" class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-ok"></i>
+					<span th:remove="tag">&nbsp;Update&nbsp;</span>
+				</button>
+				<a class="btn btn-lg btn-default" href="#" th:href="@{/}">
+					<i class="glyphicon glyphicon-home"></i><span th:remove="tag">&nbsp;Home&nbsp;</span>
+				</a>
+			</div>
+		</form>
+		<br/>
+		<br/>
+	</div><!-- /.container -->
+</body>
+</html>
